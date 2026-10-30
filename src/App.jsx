@@ -21,22 +21,22 @@ const App = () => {
 
   return (
     <div className='bg-black overflow-auto h-screen p-4 text-white'>
-      <div className='flex h-[82%] flex-wrap gap-4 p-2'>
+      <div className='flex justify-center h-[82%] flex-wrap gap-4 p-2'>
         {showImages}
       </div>
       <div className='flex justify-center p-6 m-2 gap-4 items-center'>
-        <button style={{opacity:index==1?0.6:1}} className='bg-amber-400 text-lg cursor-pointer active:scale-95 text-black rounded px-3 py-2'
+        <button disabled={index==1} className='disabled:opacity-50 disabled:cursor-not-allowed bg-amber-400 text-lg cursor-pointer active:scale-95 text-black rounded px-3 py-2'
           onClick={()=>{
             if(index!=1){
               setIndex(index-1)
-              images([])
+              setImages([])
             }
         }}>Prev</button>
         <h2>Page {index}</h2>
         <button className='bg-amber-400 text-lg cursor-pointer active:scale-95 text-black rounded px-3 py-2'
           onClick={()=>{
             setIndex(index+1)
-            images([])
+            setImages([])
         }}>Next</button>
       </div>
     </div>
