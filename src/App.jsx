@@ -1,20 +1,44 @@
-import { useState } from "react";
-
+import React, { useEffect, useState } from 'react'
+import axios from "axios";
+import Card from "./Components/card"
 const App = () => {
-  const formSubmitted=()=>{
-    console.log("Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed cum et placeat illo hic repellendus architecto facilis quaerat necessitatibus consequuntur ducimus quisquam maiores possimus iusto eum error blanditiis ab, quibusdam excepturi in facere. Dolorem ipsam, nisi incidunt sequi quo quam nemo mollitia repudiandae dicta quibusdam est quia itaque? Unde, totam?");
+  const [images, setImages] = useState([])
+  const [index, setIndex] = useState(1)
+  const getPics=async ()=>{
+    const response=await axios.get(`https://picsum.photos/v2/list?page=${index}&limit=10`);
+    setImages(response.data)
   }
-  const fn=()=>{
-      console.log("hello");
-      
+
+  useEffect(()=>{
+    getPics()
+  },[index])
+  let showImages = <h3 className='text-gray-300 text-xs absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold'>Loading...</h3>
+  if(images.length>0){
+    showImages = images.map((elem)=>{
+      return <Card key={elem.id} elem={elem}/>
+    })
   }
-  fn()
-  const [num, setnum] = useState(0)
+
   return (
-    
-    <div>
-      <h1>{num}</h1>
-      <button >Click me</button>
+    <div className='bg-black overflow-auto h-screen p-4 text-white'>
+      <div className='flex h-[82%] flex-wrap gap-4 p-2'>
+        {showImages}
+      </div>
+      <div className='flex justify-center p-6 m-2 gap-4 items-center'>
+        <button style={{opacity:index==1?0.6:1}} className='bg-amber-400 text-lg cursor-pointer active:scale-95 text-black rounded px-3 py-2'
+          onClick={()=>{
+            if(index!=1){
+              setIndex(index-1)
+              images([])
+            }
+        }}>Prev</button>
+        <h2>Page {index}</h2>
+        <button className='bg-amber-400 text-lg cursor-pointer active:scale-95 text-black rounded px-3 py-2'
+          onClick={()=>{
+            setIndex(index+1)
+            images([])
+        }}>Next</button>
+      </div>
     </div>
   )
 }
